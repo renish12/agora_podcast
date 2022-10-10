@@ -5,6 +5,7 @@ import Home from './App/Screen/Home';
 // import Live from './App/Screen/Live';
 // import PodcastScreen from './App/Screen/PodcastScreen';
 import Voice from './App/Screen/Voice';
+import BeautyEffect from './App/Screen/Agora/BeautyEffect';
 // import AgoraVoice from './App/Screen/Agora/AgoraVoice';
 // import MediaRecorder from './App/Screen/Agora/Recorder';
 // import StreamMessage from './App/Screen/Agora/StreamMessage';
@@ -27,6 +28,11 @@ export default function App() {
         <Stack.Screen
           name="Voice"
           component={Voice}
+          options={options}
+        />
+        <Stack.Screen
+          name="BeautyEffect"
+          component={BeautyEffect}
           options={options}
         />
         {/* <Stack.Screen
