@@ -175,6 +175,7 @@ import requestCameraAndAudioPermission from '../components/Permission';
 import styles from '../components/Style';
 import RtmEngine from 'agora-react-native-rtm';
 import {AgoraButton} from '../components/ui';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 interface Props {}
 
@@ -324,6 +325,8 @@ export default class Voice extends Component<null, State> {
    * @description Function to start the call
    */
   startCall = async () => {
+    console.log('2322sdfdsf');
+
     const {myUsername, token, channelName, rtcUid, userAccount} = this.state;
     if (myUsername) {
       // Join RTC Channel using null token and channel name
@@ -360,6 +363,8 @@ export default class Voice extends Component<null, State> {
   };
 
   enableLocalAudio = () => {
+    console.log(111);
+
     this._rtcEngine?.enableLocalAudio(true);
     this.setState({enableLocalAudio: true});
   };
@@ -368,6 +373,7 @@ export default class Voice extends Component<null, State> {
    * Step 3-1-2 (Optional): disableLocalAudio
    */
   disableLocalAudio = () => {
+    console.log(2322);
     this._rtcEngine?.enableLocalAudio(false);
     this.setState({enableLocalAudio: false});
   };
@@ -384,6 +390,7 @@ export default class Voice extends Component<null, State> {
     } = this.state;
     return (
       <View style={styles.max}>
+        <SafeAreaView style={{marginBottom: 0}} />
         <View style={styles.spacer}>
           <Text style={styles.roleText}>
             You're{' '}
@@ -415,7 +422,7 @@ export default class Voice extends Component<null, State> {
             ) : null}
           </>
         )}
-        <View style={{flexDirection: 'column', height: 120}}>
+        <View style={{flexDirection: 'column', height: 120, marginTop: 20}}>
           <View style={styles.buttonHolder}>
             <TouchableOpacity onPress={this.toggleRole} style={styles.button}>
               <Text style={styles.buttonText}> Toggle Role </Text>
@@ -427,7 +434,7 @@ export default class Voice extends Component<null, State> {
               <Text style={styles.buttonText}> End Call </Text>
             </TouchableOpacity>
           </View>
-          <View style={{height: 80}} />
+          <View style={{height: 20}} />
           <AgoraButton
             buttonStyle={{backgroundColor: '#38373A', marginHorizontal: 25}}
             title={`${enableLocalAudio ? 'Disable' : 'Enable'} Microphone`}
@@ -446,14 +453,72 @@ export default class Voice extends Component<null, State> {
       this.state;
     return joinSucceed ? (
       <View style={styles.fullView}>
-        <Text style={{fontWeight: 'bold'}}>{localUserData[0].uid}</Text>
+        <Text
+          style={{
+            fontWeight: 'bold',
+            fontSize: 22,
+            alignSelf: 'center',
+            // textDecorationLine: 'underline',
+          }}>
+          Connected User-Id
+        </Text>
+        <View
+          style={{
+            height: 5,
+            backgroundColor: '#000000',
+            marginHorizontal: 15,
+            borderRadius: 5,
+          }}
+        />
+
+        <View
+          style={{
+            height: 30,
+            width: '90%',
+            backgroundColor: '#028FCE',
+            marginHorizontal: 20,
+            marginTop: 5,
+            justifyContent: 'center',
+            borderRadius: 25,
+          }}>
+          {/* <Text style={{fontWeight: 'bold', textAlign: 'center'}}>12346</Text> */}
+          <Text
+            style={{fontWeight: 'bold', textAlign: 'center', color: '#ffffff'}}>
+            {localUserData[0].uid}
+          </Text>
+        </View>
         <ScrollView>
           {peerIds.map((value, index) => {
-            return <Text key={index}>{value}</Text>;
-            // return <Text key={index}>{usernames[value + '']}</Text>;
+            return (
+              <View
+                style={{
+                  height: 30,
+                  width: '90%',
+                  backgroundColor: 'gray',
+                  marginHorizontal: 20,
+                  marginTop: 5,
+                  justifyContent: 'center',
+                  borderRadius: 25,
+                }}>
+                <Text key={index} style={{textAlign: 'center'}}>
+                  {value}
+                </Text>
+              </View>
+            );
           })}
         </ScrollView>
       </View>
     ) : null;
+    // return joinSucceed ? (
+    //   <View style={styles.fullView}>
+    //     <Text style={{fontWeight: 'bold'}}>{localUserData[0].uid}</Text>
+    //     <ScrollView>
+    //       {peerIds.map((value, index) => {
+    //         return <Text key={index}>{value}</Text>;
+    //         // return <Text key={index}>{usernames[value + '']}</Text>;
+    //       })}
+    //     </ScrollView>
+    //   </View>
+    // ) : null;
   };
 }

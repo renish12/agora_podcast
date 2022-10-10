@@ -8,11 +8,11 @@ export default StyleSheet.create({
   },
   buttonHolder: {
     alignItems: 'center',
-    // alignItems: 'flex-end',
-    flex: 1,
+    // // alignItems: 'flex-end',
+    // flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    marginBottom: -100,
+    // marginBottom: -100,
   },
   button: {
     paddingHorizontal: 16,
@@ -36,9 +36,10 @@ export default StyleSheet.create({
     color: '#fff',
   },
   fullView: {
-    flex: 5,
+    flex: 1,
     alignContent: 'center',
     marginHorizontal: 24,
+    marginBottom:15
   },
   centerText: {
     textAlign: 'center',

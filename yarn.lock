@@ -6380,7 +6380,7 @@
   "resolved" "https://registry.npmjs.org/react-is/-/react-is-17.0.2.tgz"
   "version" "17.0.2"
 
-"react-native-agora@^3.7.0", "react-native-agora@^3.7.1":
+"react-native-agora@^3.6.2", "react-native-agora@^3.7.0":
   "integrity" "sha512-meArJ8YQoZZb4UP2qZEAGWtEJYu/LrOcD/d0sH5BIhwKWZzuLYwN6E/hzlYnd4iWDbuPvaW0dgKCN/RgsoAr3A=="
   "resolved" "https://registry.npmjs.org/react-native-agora/-/react-native-agora-3.7.1.tgz"
   "version" "3.7.1"
