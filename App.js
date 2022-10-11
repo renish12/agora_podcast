@@ -30,6 +30,11 @@ export default function App() {
           component={Voice}
           options={options}
         />
+        <Stack.Screen
+          name="BeautyEffect"
+          component={BeautyEffect}
+          options={options}
+        />
         {/* <Stack.Screen
           name="AgoraVoice"
           component={AgoraVoice}
