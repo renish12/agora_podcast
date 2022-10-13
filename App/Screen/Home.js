@@ -27,7 +27,7 @@ export default function Home() {
     //   return '987';
     // });
     // navigation.navigate('PodcastScreen');
-    navigation.navigate('BeautyEffect');
+    navigation.navigate('Voice');
     // navigation.navigate('Live', {type: 'create', channel: 'Testing'});
     // navigation.navigate('Live', {type: 'create', channel: uuid()});
   };

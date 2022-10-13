@@ -113,13 +113,23 @@ export default class Voice extends Component<null, State> {
     // If remot user joins RTC channel(Other user)
     this._rtcEngine.addListener('UserJoined', (uid, elapsed) => {
       console.log('UserJoined', uid, elapsed);
-
       // Get current peer IDs
       const {peerIds} = this.state;
       // If new user
       if (peerIds.indexOf(uid) === -1) {
         this._rtcEngine?.getUserInfoByUid(uid).then(userInfo => {
-          console.log(userInfo, '/-/-/-/-/-/-/-/-/-');
+          var result = '';
+          var length = 2;
+          var characters = '123456789';
+          var charactersLength = characters.length;
+          for (var i = 0; i < length; i++) {
+            result += characters.charAt(
+              Math.floor(Math.random() * charactersLength),
+            );
+          }
+          var imageURL = `https://source.unsplash.com/random/500x500?sig=${result}`;
+          var xxx = (userInfo.userProfile = imageURL);
+          console.log(userInfo, '/-/-/-/-/-/-/-');
           this.setState({
             userData: [...this.state.userData, userInfo],
           });
@@ -152,10 +162,22 @@ export default class Voice extends Component<null, State> {
     this._rtcEngine.addListener(
       'JoinChannelSuccess',
       (channel, uid, elapsed) => {
+        console.log('JoinChannelSuccess', channel, uid, elapsed);
+        var result = '';
+        var length = 2;
+        var characters = '123456789';
+        var charactersLength = characters.length;
+        for (var i = 0; i < length; i++) {
+          result += characters.charAt(
+            Math.floor(Math.random() * charactersLength),
+          );
+        }
+        var imageURL = `https://source.unsplash.com/random/500x500?sig=${result}`;
         var xx = {
           channel: channel,
           uid: uid,
           elapsed: elapsed,
+          userProfile: imageURL,
         };
         this.setState({
           userData: [],
@@ -195,19 +217,21 @@ export default class Voice extends Component<null, State> {
       // Join RTC Channel using null token and channel name
       try {
         var userAccountc = myUsername;
-        var user = {myUsername: myUsername};
-        var myJSON = JSON.stringify(user);
-        console.log(myJSON.length,'0000000000');
-        
         await this._rtcEngine
-          ?.registerLocalUserAccount(appId, userAccountc)
+          ?.registerLocalUserAccount(appId, userAccount)
           .then(result => {});
-
+        // this._rtcEngine?.localUserRegistered();
         await this._rtcEngine?.joinChannelWithUserAccount(
           token,
           channelName,
           userAccountc,
         );
+        // await this._rtcEngine?.joinChannel(
+        //   token,
+        //   channelName,
+        //   userAccount,
+        //   rtcUid,
+        // );
       } catch (error) {
         console.log(error);
       }
@@ -336,43 +360,19 @@ export default class Voice extends Component<null, State> {
             </TouchableOpacity>
           </View>
           <View style={{height: 20}} />
-          <View
-            style={{
-              flexDirection: 'row',
-              marginHorizontal: 25,
-              justifyContent: 'space-between',
-            }}>
-            <AgoraButton
-              buttonStyle={{backgroundColor: '#38373A', paddingHorizontal: 32}}
-              title={`Join As a Host`}
-              onPress={() => console.log(123)}
-            />
-            <AgoraButton
-              buttonStyle={{backgroundColor: '#38373A', paddingHorizontal: 22}}
-              title={`Join As a Listener`}
-              onPress={() => console.log(123)}
-            />
-          </View>
+          <AgoraButton
+            buttonStyle={{backgroundColor: '#38373A', marginHorizontal: 25}}
+            title={`Microphone ${openMicrophone ? 'on' : 'off'}`}
+            onPress={this.__SwitchMicrophone}
+          />
           <View style={{height: 5}} />
-          <View
-            style={{
-              flexDirection: 'row',
-              marginHorizontal: 25,
-              justifyContent: 'space-between',
-            }}>
-            <AgoraButton
-              buttonStyle={{backgroundColor: '#38373A', paddingHorizontal: 30}}
-              title={`Microphone ${openMicrophone ? 'on' : 'off'}`}
-              onPress={this.__SwitchMicrophone}
-            />
-            <AgoraButton
-              buttonStyle={{backgroundColor: '#38373A', paddingHorizontal: 30}}
-              title={`${startRecoding ? 'Stop' : 'Start'} Recording`}
-              onPress={
-                startRecoding ? this.__StopRecording : this.__StartRecording
-              }
-            />
-          </View>
+          <AgoraButton
+            buttonStyle={{backgroundColor: '#38373A', marginHorizontal: 25}}
+            title={`${startRecoding ? 'Stop' : 'Start'} Recording`}
+            onPress={
+              startRecoding ? this.__StopRecording : this.__StartRecording
+            }
+          />
 
           <View style={{height: 5}} />
         </View>

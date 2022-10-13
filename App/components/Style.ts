@@ -36,7 +36,7 @@ export default StyleSheet.create({
     color: '#fff',
   },
   fullView: {
-    flex: 1,
+    flex: 0.7,
     alignContent: 'center',
     marginHorizontal: 24,
     marginBottom:15
