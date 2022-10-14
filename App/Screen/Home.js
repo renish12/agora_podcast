@@ -7,35 +7,64 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-
-import 'react-native-get-random-values';
-import {v4 as uuid} from 'uuid';
+import {createPodcastChannel} from '../action';
 
 export default function Home() {
   const navigation = useNavigation();
-  const [joinChannel, setJoinChannel] = useState('');
+  const [channelName, setChannelName] = useState('');
 
   const joinLive = async () => {
-    // console.log('asasas');
-    navigation.navigate('Live', {type: 'join', channel: joinChannel});
+    const formData = new FormData();
+    const request = {
+      post_id: 1088,
+      podcast_name: `${channelName}`,
+      podcast_date: '2022-09-26 09:54:55',
+      record_status: 'is_on',
+      live_status: 'is_live',
+    };
+
+    Object.keys(request).forEach(key => {
+      formData.append(key, request[key]);
+    });
+console.log(formData);
+
+    // var headers = {UserId: 1, Token: 'KegRh1XVTyD-bGgc25aICEVj70LrF0B1y'};
+    // await fetch(
+    //   'http://88.208.196.241/Development/api/version_2_0/create_podcast',
+    //   {
+    //     method: 'POST',
+    //     headers: {
+    //       Accept: 'application/json',
+    //       'Content-Type': 'multipart/form-data',
+    //       ...headers,
+    //     },
+    //     // body: formData,  //------------------- Request Data -------------------
+    //   },
+    // )
+    //   .then(response => response.json())
+    //   .then(responseJson => {
+    //     console.log(responseJson, '=');
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
+    // navigation.navigate('Live', {type: 'join', channel: joinChannel});
   };
 
   const createLive = async () => {
     // console.log(uuid(), 'asasas');
-    // setJoinChannel(prevState => {
+    // setChannelName(prevState => {
     //   console.log(prevState, '+645');
     //   return '987';
     // });
     // navigation.navigate('PodcastScreen');
-    navigation.navigate('Voice');
-    // navigation.navigate('Live', {type: 'create', channel: 'Testing'});
-    // navigation.navigate('Live', {type: 'create', channel: uuid()});
+    navigation.navigate('Voice', {podCast_id: '19'});
   };
   return (
     <HomeScreen
       createLive={createLive}
-      joinChannel={joinChannel}
-      setJoinChannel={setJoinChannel}
+      joinChannel={channelName}
+      setChannelName={setChannelName}
       joinLive={joinLive}
     />
   );
@@ -90,7 +119,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function HomeScreen({createLive, joinChannel, setJoinChannel, joinLive}) {
+function HomeScreen({createLive, channelName, setChannelName, joinLive}) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Livestream App</Text>
@@ -99,25 +128,26 @@ function HomeScreen({createLive, joinChannel, setJoinChannel, joinLive}) {
           <Text style={styles.buttonText}>Start</Text>
         </TouchableOpacity>
       </View>
-      {/* <View style={styles.joinContainer}>
+
+      <View style={styles.joinContainer}>
         <TextInput
-          value={joinChannel}
-          onChangeText={setJoinChannel}
+          value={channelName}
+          onChangeText={setChannelName}
           placeholder="Enter Livestream Id"
           style={styles.joinChannelInput}
         />
         <TouchableOpacity
           onPress={() => joinLive()}
-          disabled={joinChannel === ''}
+          // disabled={channelName === ''}
           style={[
             styles.button,
             {
-              backgroundColor: joinChannel === '' ? '#555555' : '#78b0ff',
+              backgroundColor: channelName === '' ? '#555555' : '#78b0ff',
             },
           ]}>
           <Text style={styles.buttonText}>Join</Text>
         </TouchableOpacity>
-      </View> */}
+      </View>
     </View>
   );
 }

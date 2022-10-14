@@ -1,13 +1,12 @@
 import { Alert } from "react-native";
-import Api from "../utils/Api";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-// import { IMAGE_LIST } from "./types";
-// import env from '../constants/env'
+import Api from '../utils/apiMethod';
+// import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export function setLoginDetails(data) {
-  console.log(data, "Authorization");
+  console.log(data, 'Authorization');
   Api.defaultHeader({
-    Authorization: `Bearer ${data}`,
+    UserId: 1,
+    Token: 'KegRh1XVTyD-bGgc25aICEVj70LrF0B1y',
   });
 }
 
@@ -36,20 +35,34 @@ function getStatus(response, dispatch) {
   }
 }
 //----------------------Authentication flow API----------------------//
-// export async function emailVerificationCode(params) {
+// export async function createPodcastChannel(params) {
 //   try {
-//     const res = await Api.POST("Authentication/EmailVerification", params);
+//     const res = await Api.POSTFORMDATA('create_podcast', params);
 //     if (res) {
+//       console.log(res, '........');
 //       return getStatus(res);
 //     } else {
-//       return { status: false, message: res.message };
+//       return {status: false, message: res.message};
 //     }
 //   } catch (error) {
-//     console.log("EmailVerification error: ", error);
-//     return { status: false, message: "Oops, Something Went Wrong" };
+//     console.log('addPersonalProfile error: ', error);
+//     return {status: false, errorMessage: 'Oops, Something Went Wrong'};
 //   }
 // }
-
+export async function createPodcastChannel(data) {
+    try {
+      const res = await Api.POSTFORMDATA("create_podcast", data);
+      if (res.status) {
+      console.log(res);
+        return { status: res.status, data: res.data };
+      } else {
+        return { status: res.status, message: res.message };
+      }
+    } catch (error) {
+      console.log("userRegister Error: ", error);
+      return { status: false, message: "Oops, Something Went Wrong" };
+    }
+}
 // export async function signinWithMobileNumber(params) {
 //   try {
 //     const res = await Api.POST("Authentication/SigninWithMobileNumber", params);

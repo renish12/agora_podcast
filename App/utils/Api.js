@@ -1,41 +1,42 @@
-import axios from "axios";
-import { AUTHENTICATIOM_TOKEN, BASE_URL } from "../constants/env";
-import NetInfo from "@react-native-community/netinfo";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from 'axios';
+// import { AUTHENTICATIOM_TOKEN, BASE_URL } from "../constants/env";
+import NetInfo from '@react-native-community/netinfo';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {env} from '../constants/env';
 class Api {
   defaultHeader(object) {
-    Object.keys(object).forEach((key) => {
+    Object.keys(object).forEach(key => {
       axios.defaults.headers.common[key] = object[key];
     });
   }
 
   async GET(endpoint, params) {
     var header = await AsyncStorage.getItem(AUTHENTICATIOM_TOKEN);
-    return new Promise((resolve) => {
-      NetInfo.fetch().then((state) => {
+    return new Promise(resolve => {
+      NetInfo.fetch().then(state => {
         if (state.isConnected) {
           axios({
-            method: "GET",
+            method: 'GET',
             url: this.normalizePath(endpoint),
             params,
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
               authorization: `Bearer ${header}`,
             },
-            responseType: "json",
+            responseType: 'json',
             // validateStatus: function (status) {
             //     console.log(status);
             // }
           })
-            .then((response) => {
+            .then(response => {
               //console.log(response);
               resolve({
                 status: response.status,
                 response: response.data,
               });
             })
-            .catch((error) => {
-              console.log("Catch Error =>", error);
+            .catch(error => {
+              console.log('Catch Error =>', error);
               // console.log(error.response);
               resolve({
                 status: error.response.status,
@@ -45,39 +46,44 @@ class Api {
         } else {
           resolve({
             status: 502,
-            response: "Network Error",
+            response: 'Network Error',
           });
         }
       });
     });
   }
 
-  async POST(endpoint, params, headers) {
-    var header = await AsyncStorage.getItem(AUTHENTICATIOM_TOKEN);
-    return new Promise((resolve) => {
-      NetInfo.fetch().then((state) => {
+  async POST(
+    endpoint,
+    params,
+    headers = {UserId: 1, Token: 'KegRh1XVTyD-bGgc25aICEVj70LrF0B1y'},
+  ) {
+    // var header = await AsyncStorage.getItem(AUTHENTICATIOM_TOKEN);
+    return new Promise(resolve => {
+      NetInfo.fetch().then(state => {
         if (state.isConnected) {
           axios({
-            method: "post",
+            method: 'post',
             url: this.normalizePath(endpoint),
             data: JSON.stringify(params),
             headers: {
-              "Content-Type": "application/json",
-              authorization: `Bearer ${header}`,
+              // 'Content-Type': 'application/json',
+              'Content-Type': 'multipart/form-data',
+              ...headers,
             },
             // validateStatus: function (status) {
             //   return status !== 404
             // }
           })
-            .then((response) => {
+            .then(response => {
               // console.log(response);
               resolve({
                 status: response.status,
                 response: response.data,
               });
             })
-            .catch((error) => {
-              console.log("Catch Error =>", error);
+            .catch(error => {
+              console.log('Catch Error =>', error);
 
               resolve({
                 status: error.response.status,
@@ -87,37 +93,42 @@ class Api {
         } else {
           resolve({
             status: 502,
-            response: "Network Error",
+            response: 'Network Error',
           });
         }
       });
     });
   }
 
-  POSTFORMDATA(endpoint, params, headers = {}) {
-    return new Promise((resolve) => {
+  async POSTFORMDATA(
+    endpoint,
+    params,
+    headers = {UserId: 1, Token: 'KegRh1XVTyD-bGgc25aICEVj70LrF0B1y'},
+  ) {
+    return new Promise(resolve => {
       const data = new FormData();
       if (params) {
-        Object.keys(params).forEach((key) => {
+        Object.keys(params).forEach(key => {
           data.append(key, params[key]);
         });
       }
+      console.log(data, '/-/-/-/-/-/--//-/-/--/');
       axios({
-        method: "post",
+        method: 'post',
         url: this.normalizePath(endpoint),
         data: data,
-        headers: { "Content-Type": "multipart/form-data", ...headers },
+        headers: {'Content-Type': 'multipart/form-data', ...headers},
         // validateStatus: function (status) {
         //   return status !== 404
         // }
       })
-        .then((response) => {
+        .then(response => {
           resolve({
             status: response.status,
             response: response.data,
           });
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error.response);
           resolve({
             status: error.response.status,
@@ -129,30 +140,30 @@ class Api {
 
   async DELETE(endpoint, params, headers) {
     var header = await AsyncStorage.getItem(AUTHENTICATIOM_TOKEN);
-    return new Promise((resolve) => {
-      NetInfo.fetch().then((state) => {
+    return new Promise(resolve => {
+      NetInfo.fetch().then(state => {
         if (state.isConnected) {
           axios({
-            method: "delete",
+            method: 'delete',
             url: this.normalizePath(endpoint),
             data: JSON.stringify(params),
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
               authorization: `Bearer ${header}`,
             },
             // validateStatus: function (status) {
             //   return status !== 404
             // }
           })
-            .then((response) => {
+            .then(response => {
               // console.log(response);
               resolve({
                 status: response.status,
                 response: response.data,
               });
             })
-            .catch((error) => {
-              console.log("Catch Error =>", error);
+            .catch(error => {
+              console.log('Catch Error =>', error);
 
               resolve({
                 status: error.response.status,
@@ -162,7 +173,7 @@ class Api {
         } else {
           resolve({
             status: 502,
-            response: "Network Error",
+            response: 'Network Error',
           });
         }
       });
@@ -170,7 +181,7 @@ class Api {
   }
 
   normalizePath(endpoint) {
-    return `${BASE_URL}/${endpoint}`;
+    return `${env.api_base_uri}/${endpoint}`;
   }
 }
 
