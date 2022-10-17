@@ -57,11 +57,11 @@ export default class Voice extends Component<null, State> {
   constructor({props, route}) {
     super(props);
     this.state = {
-      appId: config.appId,
+      appId: '40c99dc510124badbaff653ccc5dd555',
       hostName: '',
-      token: '',
+      token: '00640c99dc510124badbaff653ccc5dd555IABKR8lE9B0/Tzz2vNdvenh+1ctsQgCClKWMbtfYSHvAxqGNjZ6379yDIgBJBQEAgFZOYwQAAQAQE01jAwAQE01jAgAQE01jBAAQE01j',
       isHost: true,
-      channelName: '',
+      channelName: 'i32a7jc2ito-bGgFj5bjDGk60u0p6x9e7',
       joinSucceed: false,
       rtcUid: parseInt((new Date().getTime() + '').slice(4, 13), 10),
       peerIds: [],
@@ -92,7 +92,9 @@ export default class Voice extends Component<null, State> {
   }
 
   componentDidMount() {
-    this.getPodcastDetails();
+    // this.getPodcastDetails();
+    this.initRTC();
+
   }
 
   componentWillUnmount() {
@@ -124,11 +126,11 @@ export default class Voice extends Component<null, State> {
       .then(response => response.json())
       .then(responseJson => {
         this.setState({
-          // token: '007eJxTYAg80hPEfW+lvNWEb/vk4poefet9nyg4i2GyptQ03mtt0x0UGEyNLYwMLM0Nkw0tDUws0tIs0yyTUwySEi1TTZPTLIwTf3B5JjcEMjLEOlswMzJAIIgvxGBoZGxiamZuYWlpbmFmamJsZMjAAADE8yA8',
+          token: '00653820971c19048ff9f9cd0ba9e5cf83aIAAnn0SxXNcQUkS0LLNoDd/w3DDKNWhtyYWit1Q4aeE/z42cbwC379yDIgD1rAAATUxOYwQAAQDdCE1jAwDdCE1jAgDdCE1jBADdCE1j',
           // channelName: '123456789978654321',
-          token: responseJson.data.ChannelToken,
-          channelName: responseJson.data.podcast_name,
-          hostName: responseJson.data.podcast_user_name,
+          // token: responseJson.data.ChannelToken,
+          // channelName: responseJson.data.podcast_name,
+          // hostName: responseJson.data.podcast_user_name,
         });
         console.log(responseJson.data, 'API Response');
         this.initRTC();
