@@ -60,14 +60,14 @@ export default StyleSheet.create({
   },
   roleText: {
     textAlign: 'center',
-    // fontWeight: '700',
+    fontWeight: '700',
     color: '#fbfbfb',
-    fontSize: 18,
+    fontSize: 20,
   },
   roleTextBold: {
     textAlign: 'center',
-    fontSize: 18,
-    fontWeight: '700',
+    fontSize: 20,
+    fontWeight: '400',
   },
   roleTextRed: {
     textAlign: 'center',

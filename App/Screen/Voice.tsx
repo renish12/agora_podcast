@@ -30,6 +30,7 @@ import RNFS from 'react-native-fs';
 
 interface State {
   appId: string;
+  hostName: string;
   token: string | null;
   isHost: boolean;
   channelName: string;
@@ -57,9 +58,10 @@ export default class Voice extends Component<null, State> {
     super(props);
     this.state = {
       appId: config.appId,
-      token: config.token,
+      hostName: '',
+      token: '',
       isHost: true,
-      channelName: config.channelId,
+      channelName: '',
       joinSucceed: false,
       rtcUid: parseInt((new Date().getTime() + '').slice(4, 13), 10),
       peerIds: [],
@@ -90,8 +92,7 @@ export default class Voice extends Component<null, State> {
   }
 
   componentDidMount() {
-    // this.getPodcastDetails();
-    this.initRTC();
+    this.getPodcastDetails();
   }
 
   componentWillUnmount() {
@@ -106,7 +107,8 @@ export default class Voice extends Component<null, State> {
     Object.keys(request).forEach(key => {
       formData.append(key, request[key]);
     });
-    var headers = {UserId: 1, Token: 'KegRh1XVTyD-bGgc25aICEVj70LrF0B1y'};
+    console.log(formData, '1234567*89');
+    var headers = {UserId: 42, Token: 'JgjMg6A5cAT-bGg0jiC1AA3JtQuEHEQ1I'};
     await fetch(
       'http://88.208.196.241/Development/api/version_2_0/podcast_details',
       {
@@ -122,13 +124,17 @@ export default class Voice extends Component<null, State> {
       .then(response => response.json())
       .then(responseJson => {
         this.setState({
+          // token: '007eJxTYAg80hPEfW+lvNWEb/vk4poefet9nyg4i2GyptQ03mtt0x0UGEyNLYwMLM0Nkw0tDUws0tIs0yyTUwySEi1TTZPTLIwTf3B5JjcEMjLEOlswMzJAIIgvxGBoZGxiamZuYWlpbmFmamJsZMjAAADE8yA8',
+          // channelName: '123456789978654321',
           token: responseJson.data.ChannelToken,
           channelName: responseJson.data.podcast_name,
+          hostName: responseJson.data.podcast_user_name,
         });
-        console.log(responseJson.data, '=');
+        console.log(responseJson.data, 'API Response');
+        this.initRTC();
       })
       .catch(error => {
-        console.log(error);
+        console.log(error, '===');
       });
 
     this.setState({
@@ -343,15 +349,13 @@ export default class Voice extends Component<null, State> {
         <SafeAreaView style={{marginBottom: 0}} />
         <View style={styles.spacer}>
           <Text style={styles.roleText}>
-            You're{' '}
-            <Text style={styles.roleTextBold}>
-              {isHost ? 'a broadcaster' : 'the audience'}
-            </Text>
+            {this.state.hostName + ' '}
+            <Text style={styles.roleTextBold}>is Host of the channel</Text>
           </Text>
           <Text style={styles.roleText}>
             {joinSucceed
               ? "You're connected to " + channelName
-              : "You're disconnected - start call"}
+              : "You're disconnected - Join call"}
           </Text>
         </View>
         {this._renderUsers()}

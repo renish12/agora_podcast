@@ -3,8 +3,8 @@ const config = {
   appId: '53820971c19048ff9f9cd0ba9e5cf83a',
   // Please refer to https://docs.agora.io/en/Agora%20Platform/token
   token:
-    '00653820971c19048ff9f9cd0ba9e5cf83aIABp8xBZnfacGrWbmawBMn5QIucuN+2JYH+PaKLV9vymM0Wdgdi379yDIgDpDgAAaVtKYwQAAQD5F0ljAwD5F0ljAgD5F0ljBAD5F0lj',
-  channelId: 'Agora Podcast 14102022',
+    '007eJxTYAg80hPEfW+lvNWEb/vk4poefet9nyg4i2GyptQ03mtt0x0UGEyNLYwMLM0Nkw0tDUws0tIs0yyTUwySEi1TTZPTLIwTf3B5JjcEMjLEOlswMzJAIIgvxGBoZGxiamZuYWlpbmFmamJsZMjAAADE8yA8',
+  channelId: '123456789978654321',
   uid: parseInt((new Date().getTime() + '').slice(4, 13), 10),
 };
 
