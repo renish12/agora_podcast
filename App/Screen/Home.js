@@ -21,42 +21,30 @@ export default function Home() {
   const [joinChannelName, setJoinChannelName] = useState('');
 
   useEffect(() => {
-    console.log(1);
-    // const socket = io("http://88.208.196.241:7001",{
-    //   maxHttpBufferSize: 100000000,
-    //   connectTimeout: 5000,
-    //   transports:['websocket','polling'],
-    //   pingInterval: 25 * 1000,
-    //   pingTimeout: 5000,
-    //   allowEIO3: true,
-    // })
-    // socket.on('connect', () => {
-    //   console.log(socket.connected); // true
-    // });
+    // console.log(1);
+    // // const socket = io("http://88.208.196.241:7001",{
+    // //   maxHttpBufferSize: 100000000,
+    // //   connectTimeout: 5000,
+    // //   transports:['websocket','polling'],
+    // //   pingInterval: 25 * 1000,
+    // //   pingTimeout: 5000,
+    // //   allowEIO3: true,
+    // // })
+    // // socket.on('connect', () => {
+    // //   console.log(socket.connected); // true
+    // // });
+    // // const socket = io('http://88.208.196.241:7001');
+
+    // // const socket = io('http://192.168.5.112:3000');
     // const socket = io('http://88.208.196.241:7001');
-
-    // const socket = io('http://192.168.5.112:3000');
-    const socket = io('http://88.208.196.241:7001');
-    // dispatch( updateSocket({socket}) );
-    socket.on('received_message', asdf => {
-      console.log('connected');
-      console.log(asdf);
-      setChannelName(asdf);
-    });
-    socket.on('connect_error', err => {
-      console.log(`------ connect_error due to ${err.message} -------`);
-    });
-    // console.log('*Socket Connection*');
-    // const socket = io('http://88.208.196.241:7001', {
-    //   transports: ['websocket'],
+    // // dispatch( updateSocket({socket}) );
+    // socket.on('received_message', asdf => {
+    //   console.log('connected');
+    //   console.log(asdf);
+    //   setChannelName(asdf);
     // });
-    // socket.addEventListener('error', (event) => {
-    //   console.log('WebSocket error:', event);
-    // });
-
-    // socket.on("connect_error", (err) => {
-    //   console.log(err instanceof Error);
-    //   console.log(err.message,'//-/-/-/-/--/');
+    // socket.on('connect_error', err => {
+    //   console.log(`------ connect_error due to ${err.message} -------`);
     // });
   }, []);
 

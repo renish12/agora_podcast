@@ -4,7 +4,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import Home from '../Screen/Home';
 import Voice from '../Screen/Voice';
-// import AudioCaption from '../Screen/AudioCaption';
+import AudioCaption from '../Screen/AudioCaption';
 import JoinChannelAudio from '../Screen/Agora/BasicAudioAgora';
 
 const Stack = createStackNavigator();
@@ -36,11 +36,11 @@ const MainStackNavigator = () => {
           component={JoinChannelAudio}
           options={options}
         />
-        {/* <Stack.Screen
+        <Stack.Screen
           name="AudioCaption"
           component={AudioCaption}
           options={options}
-        /> */}
+        />
         {/* <Stack.Screen
           name="AgoraVoice"
           component={AgoraVoice}

@@ -47,8 +47,6 @@ interface State {
   maxDurationMs: number;
   startRecoding: boolean;
   openMicrophone: boolean;
-  enableSpeakerphone: boolean;
-  playEffect: boolean;
 }
 
 export default class Voice extends Component<null, State> {
@@ -57,11 +55,11 @@ export default class Voice extends Component<null, State> {
   constructor({props, route}) {
     super(props);
     this.state = {
-      appId: '40c99dc510124badbaff653ccc5dd555',
+      appId: '',
       hostName: '',
-      token: '00640c99dc510124badbaff653ccc5dd555IABKR8lE9B0/Tzz2vNdvenh+1ctsQgCClKWMbtfYSHvAxqGNjZ6379yDIgBJBQEAgFZOYwQAAQAQE01jAwAQE01jAgAQE01jBAAQE01j',
+      token: '',
       isHost: true,
-      channelName: 'i32a7jc2ito-bGgFj5bjDGk60u0p6x9e7',
+      channelName: '',
       joinSucceed: false,
       rtcUid: parseInt((new Date().getTime() + '').slice(4, 13), 10),
       peerIds: [],
@@ -80,8 +78,6 @@ export default class Voice extends Component<null, State> {
       maxDurationMs: 1200000000000000,
       startRecoding: false,
       openMicrophone: true,
-      enableSpeakerphone: true,
-      playEffect: false,
     };
     if (Platform.OS === 'android') {
       // Request required permissions from Android
@@ -94,7 +90,6 @@ export default class Voice extends Component<null, State> {
   componentDidMount() {
     // this.getPodcastDetails();
     this.initRTC();
-
   }
 
   componentWillUnmount() {
@@ -126,8 +121,9 @@ export default class Voice extends Component<null, State> {
       .then(response => response.json())
       .then(responseJson => {
         this.setState({
-          token: '00653820971c19048ff9f9cd0ba9e5cf83aIAAnn0SxXNcQUkS0LLNoDd/w3DDKNWhtyYWit1Q4aeE/z42cbwC379yDIgD1rAAATUxOYwQAAQDdCE1jAwDdCE1jAgDdCE1jBADdCE1j',
-          // channelName: '123456789978654321',
+          token:
+            '00640c99dc510124badbaff653ccc5dd555IAAt5tndZ/uxz4DdWR6rOMlG5kC77Ipxnr6GauoqmsJSCVkCkNaIsCQyIgAyhQAAQodPYwQAAQDSQ05jAwDSQ05jAgDSQ05jBADSQ05j',
+          channelName: 'N30M0BTC',
           // token: responseJson.data.ChannelToken,
           // channelName: responseJson.data.podcast_name,
           // hostName: responseJson.data.podcast_user_name,
@@ -150,7 +146,11 @@ export default class Voice extends Component<null, State> {
    */
   initRTC = async () => {
     const {appId, isHost} = this.state;
-    this._rtcEngine = await RtcEngine.create(appId);
+    // this._rtcEngine = await RtcEngine.create("53820971c19048ff9f9cd0ba9e5cf83a");  // ---------- Local side App-Id
+    this._rtcEngine = await RtcEngine.create(
+      '40c99dc510124badbaff653ccc5dd555',
+    ); // ---------- Client side App-Id
+    // this._rtcEngine = await RtcEngine.create(appId); // ---------- Dynamic data
     await this._rtcEngine.setChannelProfile(ChannelProfile.LiveBroadcasting);
     await this._rtcEngine.setClientRole(
       isHost ? ClientRole.Broadcaster : ClientRole.Audience,
@@ -165,8 +165,6 @@ export default class Voice extends Component<null, State> {
       // If new user
       if (peerIds.indexOf(uid) === -1) {
         this._rtcEngine?.getUserInfoByUid(uid).then(userInfo => {
-          // console.log(userInfo.userAccount, '/-/-/-/-/asdfasdasdas-/-/-/-/-');
-          console.log(userInfo, '/-/-/-/-/-/-/-/-/-');
           this.setState({
             userData: [...this.state.userData, userInfo],
           });
@@ -236,17 +234,13 @@ export default class Voice extends Component<null, State> {
    * @description Function to start the call
    */
   __StartCall = async (userType: string) => {
-    const {myUsername, token, channelName, rtcUid, userAccount, appId} =
-      this.state;
+    const {myUsername, appId} = this.state;
     if (myUsername) {
       // Join RTC Channel using null token and channel name
       this.setState({
         userData: [],
       });
       try {
-        var userNameDetails = myUsername;
-        // https://source.unsplash.com/random/500x500?sig=99
-
         var userNameDetailss =
           'https:##source.unsplash.com#random#500x500?sig=99';
         var userDetails = `myUsername:${myUsername},userRole:${userType},image:${userNameDetailss}`;
@@ -254,14 +248,28 @@ export default class Voice extends Component<null, State> {
         await this._rtcEngine
           ?.registerLocalUserAccount(appId, userDetails)
           .then(result => {});
+        // For Dynamic Call
+        // await this._rtcEngine?.joinChannelWithUserAccount(
+        //   token,
+        //   channelName,
+        //   userDetails,
+        // );
 
+        // For Local Static Data of the Agora console
+        // await this._rtcEngine?.joinChannelWithUserAccount(
+        //   '007eJxTYJjelafYHb++luXi7QfdUlPN/Ba4KG2MyOd4+chxxSveKgMFBlNjCyMDS3PDZENLAxOLtDTLNMvkFIOkRMtU0+Q0C+PE7eZ+yQ2BjAzrGcWYGRkgEMTnY3BMzy9KVDC0MDQwMjAyYmAAAC4vH7o=',
+        //   'Agora 18102022',
+        //   userDetails,
+        // );
+
+        // For Client side Data of the Agora console
         await this._rtcEngine?.joinChannelWithUserAccount(
-          token,
-          channelName,
+          '00640c99dc510124badbaff653ccc5dd555IAAt5tndZ/uxz4DdWR6rOMlG5kC77Ipxnr6GauoqmsJSCVkCkNaIsCQyIgAyhQAAQodPYwQAAQDSQ05jAwDSQ05jAgDSQ05jBADSQ05j',
+          'N30M0BTC',
           userDetails,
         );
       } catch (error) {
-        console.log(error, '1123123123123123');
+        console.log(error, 'REGISTER-LOCAL-USER-ACCOUNT');
       }
     }
   };
@@ -271,7 +279,6 @@ export default class Voice extends Component<null, State> {
    * @description Function to end the call
    */
   __EndCall = async () => {
-    let {channelName, rtcUid} = this.state;
     await this._rtcEngine?.leaveChannel();
     // await this._rtmEngine
     //   ?.sendMessageByChannelId(channelName, rtcUid + ':!leave')
@@ -288,10 +295,9 @@ export default class Voice extends Component<null, State> {
   };
 
   __StartRecording = async () => {
-    const {channelName, rtcUid, storagePath, maxDurationMs} = this.state;
+    const {rtcUid, storagePath} = this.state;
     this.setState({startRecoding: true});
     try {
-      console.log('IN SIDE');
       this._rtcEngine
         ?.startAudioRecordingWithConfig({
           filePath: `${storagePath}/${rtcUid}.mp3`,
@@ -301,9 +307,9 @@ export default class Voice extends Component<null, State> {
           recordingChannel: 2,
         })
         .then(result => {
-          console.log(result, '--------------');
+          console.log(result, 'START-AUDIO-RECORDING-WITH-CONFIG');
         });
-      console.log(`${storagePath}/${rtcUid}.mp3`, '--------------');
+      console.log(`${storagePath}/${rtcUid}.mp3`, 'AUDIO-FILE-PATH');
     } catch (error) {
       console.log(error);
     }
@@ -326,7 +332,7 @@ export default class Voice extends Component<null, State> {
         this.setState({openMicrophone: !openMicrophone});
       })
       .catch(err => {
-        console.warn('enableLocalAudio', err);
+        console.log('enableLocalAudio', err);
       });
   };
 
@@ -337,12 +343,8 @@ export default class Voice extends Component<null, State> {
   render() {
     const {
       joinSucceed,
-      isHost,
       channelName,
       myUsername,
-      peerIds,
-      usernames,
-      enableLocalAudio,
       startRecoding,
       openMicrophone,
     } = this.state;
@@ -380,12 +382,6 @@ export default class Voice extends Component<null, State> {
         )}
         <View style={{flexDirection: 'column', height: 120, marginTop: 20}}>
           <View style={styles.buttonHolder}>
-            {/* <TouchableOpacity onPress={this.__ToggleRole} style={styles.button}>
-              <Text style={styles.buttonText}> Toggle Role </Text>
-            </TouchableOpacity> */}
-            {/* <TouchableOpacity onPress={this.__StartCall} style={styles.button}>
-              <Text style={styles.buttonText}> Start Call </Text>
-            </TouchableOpacity> */}
             <TouchableOpacity onPress={this.__EndCall} style={styles.button}>
               <Text style={styles.buttonText}> End Call </Text>
             </TouchableOpacity>
@@ -435,15 +431,7 @@ export default class Voice extends Component<null, State> {
   }
 
   _renderUsers = () => {
-    const {
-      joinSucceed,
-      peerIds,
-      isHost,
-      usernames,
-      myUsername,
-      localUserData,
-      userData,
-    } = this.state;
+    const {joinSucceed, myUsername, userData} = this.state;
     return joinSucceed ? (
       <View style={styles.fullView}>
         <Text
@@ -451,7 +439,6 @@ export default class Voice extends Component<null, State> {
             fontWeight: 'bold',
             fontSize: 22,
             alignSelf: 'center',
-            // textDecorationLine: 'underline',
           }}>
           Connected User-Id
         </Text>
@@ -474,10 +461,8 @@ export default class Voice extends Component<null, State> {
             justifyContent: 'center',
             borderRadius: 25,
           }}>
-          {/* <Text style={{fontWeight: 'bold', textAlign: 'center'}}>12346</Text> */}
           <Text
             style={{fontWeight: 'bold', textAlign: 'center', color: '#ffffff'}}>
-            {/* {localUserData[0].uid} */}
             {myUsername}
           </Text>
         </View>
