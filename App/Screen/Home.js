@@ -35,14 +35,14 @@ export default function Home() {
     // // });
     // // const socket = io('http://88.208.196.241:7001');
 
-    // // const socket = io('http://192.168.5.112:3000');
-    // const socket = io('http://88.208.196.241:7001');
-    // // dispatch( updateSocket({socket}) );
-    // socket.on('received_message', asdf => {
-    //   console.log('connected');
-    //   console.log(asdf);
-    //   setChannelName(asdf);
-    // });
+    // const socket = io('http://192.168.5.112:3000');
+    const socket = io('http://88.208.196.241:7001');
+    // dispatch( updateSocket({socket}) );
+    socket.on('received_message', asdf => {
+      console.log('connected');
+      console.log(asdf);
+      setChannelName(asdf);
+    });
     // socket.on('connect_error', err => {
     //   console.log(`------ connect_error due to ${err.message} -------`);
     // });

@@ -55,11 +55,13 @@ export default class Voice extends Component<null, State> {
   constructor({props, route}) {
     super(props);
     this.state = {
-      appId: '',
+      appId: '40c99dc510124badbaff653ccc5dd555',
       hostName: '',
-      token: '',
+      token:
+        '00640c99dc510124badbaff653ccc5dd555IABSeyAUu7c5qMVNbSYK1kUinDaYz/A+Fbao/c1J+ULqrB8CczuIsCQyIgBUMAEAtPlQYwQAAQBEtk9jAwBEtk9jAgBEtk9jBABEtk9j',
+      // token: '007eJxTYHjJIaOSv1PK9OTx5VNLXjr+m3St19ZaScC6+9Bav8v5LAsVGEyNLYwMLM0Nkw0tDUws0tIs0yyTUwySEi1TTZPTLIwTc4v9kmsb/ZI1XiQzMzJAIAiIMWRmGZjkAPW6GyaapWW4JuWb5RSXZDIymAIAmbskVQ==',
       isHost: true,
-      channelName: '',
+      channelName: 'Agora 19102022',
       joinSucceed: false,
       rtcUid: parseInt((new Date().getTime() + '').slice(4, 13), 10),
       peerIds: [],
@@ -148,7 +150,7 @@ export default class Voice extends Component<null, State> {
     const {appId, isHost} = this.state;
     // this._rtcEngine = await RtcEngine.create("53820971c19048ff9f9cd0ba9e5cf83a");  // ---------- Local side App-Id
     this._rtcEngine = await RtcEngine.create(
-      '40c99dc510124badbaff653ccc5dd555',
+      '8d4d741163394dc291efca46a60a38c5',
     ); // ---------- Client side App-Id
     // this._rtcEngine = await RtcEngine.create(appId); // ---------- Dynamic data
     await this._rtcEngine.setChannelProfile(ChannelProfile.LiveBroadcasting);
@@ -158,8 +160,7 @@ export default class Voice extends Component<null, State> {
 
     // If remot user joins RTC channel(Other user)
     this._rtcEngine.addListener('UserJoined', (uid, elapsed) => {
-      console.log('UserJoined', uid, elapsed);
-
+      console.log('UserJoined-----------------------------------', uid, elapsed);
       // Get current peer IDs
       const {peerIds} = this.state;
       // If new user
@@ -212,7 +213,7 @@ export default class Voice extends Component<null, State> {
     );
 
     this._rtcEngine.addListener('Error', errorCode => {
-      console.log(errorCode, 'ERROR CODE');
+      console.log(errorCode, '---ERROR CODE---');
     });
   };
 
@@ -234,7 +235,7 @@ export default class Voice extends Component<null, State> {
    * @description Function to start the call
    */
   __StartCall = async (userType: string) => {
-    const {myUsername, appId} = this.state;
+    const {myUsername, appId, token, channelName} = this.state;
     if (myUsername) {
       // Join RTC Channel using null token and channel name
       this.setState({
@@ -245,15 +246,26 @@ export default class Voice extends Component<null, State> {
           'https:##source.unsplash.com#random#500x500?sig=99';
         var userDetails = `myUsername:${myUsername},userRole:${userType},image:${userNameDetailss}`;
 
-        await this._rtcEngine
-          ?.registerLocalUserAccount(appId, userDetails)
-          .then(result => {});
+        // await this._rtcEngine
+        //   ?.registerLocalUserAccount('53820971c19048ff9f9cd0ba9e5cf83a', userDetails)
+        //   .then(result => {});
         // For Dynamic Call
-        // await this._rtcEngine?.joinChannelWithUserAccount(
-        //   token,
-        //   channelName,
+        // await this._rtcEngine?.joinChannel(
+        //   '0068d4d741163394dc291efca46a60a38c5IADWv8ewPmKJzZfypmG1Gz9nXbx6ilUO0sBOwtJM0lHdNFkCkNaIsCQyIgBddgEAvA9RYwQAAQBMzE9jAwBMzE9jAgBMzE9jBABMzE9j',
+        //   'N30M0BTC',
         //   userDetails,
+        //   42,
         // );
+        await this._rtcEngine?.joinChannel(
+          // token,
+          // channelName,
+          // '0068d4d741163394dc291efca46a60a38c5IADWv8ewPmKJzZfypmG1Gz9nXbx6ilUO0sBOwtJM0lHdNFkCkNaIsCQyIgBddgEAvA9RYwQAAQBMzE9jAwBMzE9jAgBMzE9jBABMzE9j',
+          // 'N30M0BTC',
+          '0068d4d741163394dc291efca46a60a38c5IABrtPzrWiiaOoZ7vdQDM9nOq3lq7vSHEdhoYYiavbV6fFkCkNaIsCQyIgAm8gAAhShRYwQAAQAV5U9jAwAV5U9jAgAV5U9jBAAV5U9j',
+          'N30M0BTC',
+          null,
+          42
+        );
 
         // For Local Static Data of the Agora console
         // await this._rtcEngine?.joinChannelWithUserAccount(
@@ -263,11 +275,11 @@ export default class Voice extends Component<null, State> {
         // );
 
         // For Client side Data of the Agora console
-        await this._rtcEngine?.joinChannelWithUserAccount(
-          '00640c99dc510124badbaff653ccc5dd555IAAt5tndZ/uxz4DdWR6rOMlG5kC77Ipxnr6GauoqmsJSCVkCkNaIsCQyIgAyhQAAQodPYwQAAQDSQ05jAwDSQ05jAgDSQ05jBADSQ05j',
-          'N30M0BTC',
-          userDetails,
-        );
+        // await this._rtcEngine?.joinChannelWithUserAccount(
+        //   '007eJxTYHjJIaOSv1PK9OTx5VNLXjr+m3St19ZaScC6+9Bav8v5LAsVGEyNLYwMLM0Nkw0tDUws0tIs0yyTUwySEi1TTZPTLIwTc4v9kmsb/ZI1XiQzMzJAIAiIMWRmGZjkAPW6GyaapWW4JuWb5RSXZDIymAIAmbskVQ==',
+        //   'ij04l209G1a6fhEbo6lsti',
+        //   userDetails,
+        // );
       } catch (error) {
         console.log(error, 'REGISTER-LOCAL-USER-ACCOUNT');
       }
