@@ -1,6 +1,5 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
-  Image,
   Platform,
   ScrollView,
   Text,
@@ -8,11 +7,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import RtcEngine, {ClientRole, ChannelProfile} from 'react-native-agora';
+import RtcEngine, { ClientRole, ChannelProfile } from 'react-native-agora';
 import requestCameraAndAudioPermission from '../components/Permission';
 import styles from '../components/Style';
-import {AgoraButton} from '../components/ui';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { AgoraButton } from '../components/ui';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import config from '../config/agora.config';
 import RNFS from 'react-native-fs';
 
@@ -38,7 +37,7 @@ interface State {
   rtcUid: number;
   peerIds: number[];
   myUsername: string;
-  usernames: {[uid: string]: string};
+  usernames: { [uid: string]: string };
   userAccount: string;
   localUserData: object[];
   userData: object[];
@@ -52,31 +51,27 @@ interface State {
 export default class Voice extends Component<null, State> {
   _rtcEngine?: RtcEngine;
 
-  constructor({props, route}) {
+  constructor({ props, route }) {
     super(props);
     this.state = {
-      appId: '40c99dc510124badbaff653ccc5dd555',
+      appId: config.appId,
       hostName: '',
-      token:
-        '00640c99dc510124badbaff653ccc5dd555IABSeyAUu7c5qMVNbSYK1kUinDaYz/A+Fbao/c1J+ULqrB8CczuIsCQyIgBUMAEAtPlQYwQAAQBEtk9jAwBEtk9jAgBEtk9jBABEtk9j',
-      // token: '007eJxTYHjJIaOSv1PK9OTx5VNLXjr+m3St19ZaScC6+9Bav8v5LAsVGEyNLYwMLM0Nkw0tDUws0tIs0yyTUwySEi1TTZPTLIwTc4v9kmsb/ZI1XiQzMzJAIAiIMWRmGZjkAPW6GyaapWW4JuWb5RSXZDIymAIAmbskVQ==',
+      token: config.token,
       isHost: true,
       channelName: 'Agora 19102022',
       joinSucceed: false,
       rtcUid: parseInt((new Date().getTime() + '').slice(4, 13), 10),
       peerIds: [],
       myUsername: '',
-      // myUsername: '{"myUsername":"s h kd ds gjkh sdfj kghk djs gh kdjs fhgkj dsf h gk d jf hgk dj f gh jk"}',
       usernames: {},
       userAccount: 'fhnkldfj',
       localUserData: [],
       userData: [],
       enableLocalAudio: false,
-      storagePath: `${
-        Platform.OS === 'android'
-          ? RNFS.ExternalDirectoryPath
-          : RNFS.DocumentDirectoryPath
-      }`,
+      storagePath: `${Platform.OS === 'android'
+        ? RNFS.ExternalDirectoryPath
+        : RNFS.DocumentDirectoryPath
+        }`,
       maxDurationMs: 1200000000000000,
       startRecoding: false,
       openMicrophone: true,
@@ -90,69 +85,64 @@ export default class Voice extends Component<null, State> {
   }
 
   componentDidMount() {
-    // this.getPodcastDetails();
     this.initRTC();
+    // this.getPodcastDetails();
   }
 
   componentWillUnmount() {
     this._rtcEngine?.destroy();
   }
 
-  getPodcastDetails = async () => {
-    const formData = new FormData();
-    const request = {
-      podcast_id: this.props.route.params.podCast_id,
-    };
-    Object.keys(request).forEach(key => {
-      formData.append(key, request[key]);
-    });
-    console.log(formData, '1234567*89');
-    var headers = {UserId: 42, Token: 'JgjMg6A5cAT-bGg0jiC1AA3JtQuEHEQ1I'};
-    await fetch(
-      'http://88.208.196.241/Development/api/version_2_0/podcast_details',
-      {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'multipart/form-data',
-          ...headers,
-        },
-        body: formData, //------------------- Req Data -------------------
-      },
-    )
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState({
-          token:
-            '00640c99dc510124badbaff653ccc5dd555IAAt5tndZ/uxz4DdWR6rOMlG5kC77Ipxnr6GauoqmsJSCVkCkNaIsCQyIgAyhQAAQodPYwQAAQDSQ05jAwDSQ05jAgDSQ05jBADSQ05j',
-          channelName: 'N30M0BTC',
-          // token: responseJson.data.ChannelToken,
-          // channelName: responseJson.data.podcast_name,
-          // hostName: responseJson.data.podcast_user_name,
-        });
-        console.log(responseJson.data, 'API Response');
-        this.initRTC();
-      })
-      .catch(error => {
-        console.log(error, '===');
-      });
-
-    this.setState({
-      // token: this.props.route.params.type
-    });
-  };
+  // getPodcastDetails = async () => {
+  //   const formData = new FormData();
+  //   const request = {
+  //     podcast_id: this.props.route.params.podCast_id,
+  //   };
+  //   Object.keys(request).forEach(key => {
+  //     formData.append(key, request[key]);
+  //   });
+  //   console.log(formData, '1234567*89');
+  //   var headers = {UserId: 42, Token: 'JgjMg6A5cAT-bGg0jiC1AA3JtQuEHEQ1I'};
+  //   await fetch(
+  //     'http://88.208.196.241/Development/api/version_2_0/podcast_details',
+  //     {
+  //       method: 'POST',
+  //       headers: {
+  //         Accept: 'application/json',
+  //         'Content-Type': 'multipart/form-data',
+  //         ...headers,
+  //       },
+  //       body: formData, //------------------- Req Data -------------------
+  //     },
+  //   )
+  //     .then(response => response.json())
+  //     .then(responseJson => {
+  //       this.setState({
+  //         token:
+  //           '00640c99dc510124badbaff653ccc5dd555IAAt5tndZ/uxz4DdWR6rOMlG5kC77Ipxnr6GauoqmsJSCVkCkNaIsCQyIgAyhQAAQodPYwQAAQDSQ05jAwDSQ05jAgDSQ05jBADSQ05j',
+  //         channelName: 'N30M0BTC',
+  //         // token: responseJson.data.ChannelToken,
+  //         // channelName: responseJson.data.podcast_name,
+  //         // hostName: responseJson.data.podcast_user_name,
+  //       });
+  //       console.log(responseJson.data, 'API Response');
+  //       this.initRTC();
+  //     })
+  //     .catch(error => {
+  //       console.log(error, '===');
+  //     });
+  //   this.setState({
+  //     // token: this.props.route.params.type
+  //   });
+  // };
 
   /**
    * @name initRTC
    * @description Function to initialize the Rtc Engine, attach event listeners and actions
    */
   initRTC = async () => {
-    const {appId, isHost} = this.state;
-    // this._rtcEngine = await RtcEngine.create("53820971c19048ff9f9cd0ba9e5cf83a");  // ---------- Local side App-Id
-    this._rtcEngine = await RtcEngine.create(
-      '8d4d741163394dc291efca46a60a38c5',
-    ); // ---------- Client side App-Id
-    // this._rtcEngine = await RtcEngine.create(appId); // ---------- Dynamic data
+    const { appId, isHost } = this.state;
+    this._rtcEngine = await RtcEngine.create(appId);
     await this._rtcEngine.setChannelProfile(ChannelProfile.LiveBroadcasting);
     await this._rtcEngine.setClientRole(
       isHost ? ClientRole.Broadcaster : ClientRole.Audience,
@@ -162,7 +152,7 @@ export default class Voice extends Component<null, State> {
     this._rtcEngine.addListener('UserJoined', (uid, elapsed) => {
       console.log('UserJoined-----------------------------------', uid, elapsed);
       // Get current peer IDs
-      const {peerIds} = this.state;
+      const { peerIds } = this.state;
       // If new user
       if (peerIds.indexOf(uid) === -1) {
         this._rtcEngine?.getUserInfoByUid(uid).then(userInfo => {
@@ -181,7 +171,7 @@ export default class Voice extends Component<null, State> {
     // If user leave RTC channel
     this._rtcEngine.addListener('UserOffline', (uid, reason) => {
       console.log('UserOffline', uid, reason);
-      const {peerIds, userData} = this.state;
+      const { peerIds, userData } = this.state;
       this._rtcEngine?.getUserInfoByUid(uid).then(userInfo => {
         this.setState({
           userData: userData.filter(userInfo => userInfo !== userInfo),
@@ -204,7 +194,6 @@ export default class Voice extends Component<null, State> {
           elapsed: elapsed,
         };
         this.setState({
-          // userData: [],
           localUserData: [...this.state.localUserData, xx],
           joinSucceed: true,
           rtcUid: uid,
@@ -226,7 +215,7 @@ export default class Voice extends Component<null, State> {
       !this.state.isHost ? ClientRole.Broadcaster : ClientRole.Audience,
     );
     this.setState(ps => {
-      return {isHost: !ps.isHost};
+      return { isHost: !ps.isHost };
     });
   };
 
@@ -235,7 +224,7 @@ export default class Voice extends Component<null, State> {
    * @description Function to start the call
    */
   __StartCall = async (userType: string) => {
-    const {myUsername, appId, token, channelName} = this.state;
+    const { myUsername, appId, token, channelName, rtcUid } = this.state;
     if (myUsername) {
       // Join RTC Channel using null token and channel name
       this.setState({
@@ -249,36 +238,27 @@ export default class Voice extends Component<null, State> {
         // await this._rtcEngine
         //   ?.registerLocalUserAccount('53820971c19048ff9f9cd0ba9e5cf83a', userDetails)
         //   .then(result => {});
-        // For Dynamic Call
-        // await this._rtcEngine?.joinChannel(
-        //   '0068d4d741163394dc291efca46a60a38c5IADWv8ewPmKJzZfypmG1Gz9nXbx6ilUO0sBOwtJM0lHdNFkCkNaIsCQyIgBddgEAvA9RYwQAAQBMzE9jAwBMzE9jAgBMzE9jBABMzE9j',
-        //   'N30M0BTC',
-        //   userDetails,
-        //   42,
-        // );
-        await this._rtcEngine?.joinChannel(
-          // token,
-          // channelName,
-          // '0068d4d741163394dc291efca46a60a38c5IADWv8ewPmKJzZfypmG1Gz9nXbx6ilUO0sBOwtJM0lHdNFkCkNaIsCQyIgBddgEAvA9RYwQAAQBMzE9jAwBMzE9jAgBMzE9jBABMzE9j',
-          // 'N30M0BTC',
-          '0068d4d741163394dc291efca46a60a38c5IABrtPzrWiiaOoZ7vdQDM9nOq3lq7vSHEdhoYYiavbV6fFkCkNaIsCQyIgAm8gAAhShRYwQAAQAV5U9jAwAV5U9jAgAV5U9jBAAV5U9j',
-          'N30M0BTC',
-          null,
-          42
-        );
 
+        if (Platform.OS === "android") {
+          await this._rtcEngine?.joinChannel(
+            token,
+            channelName,
+            null,
+            46
+          );
+        } else {
+          await this._rtcEngine?.joinChannel(
+            token,
+            channelName,
+            null,
+            42
+          );
+        }
         // For Local Static Data of the Agora console
         // await this._rtcEngine?.joinChannelWithUserAccount(
-        //   '007eJxTYJjelafYHb++luXi7QfdUlPN/Ba4KG2MyOd4+chxxSveKgMFBlNjCyMDS3PDZENLAxOLtDTLNMvkFIOkRMtU0+Q0C+PE7eZ+yQ2BjAzrGcWYGRkgEMTnY3BMzy9KVDC0MDQwMjAyYmAAAC4vH7o=',
-        //   'Agora 18102022',
-        //   userDetails,
-        // );
-
-        // For Client side Data of the Agora console
-        // await this._rtcEngine?.joinChannelWithUserAccount(
-        //   '007eJxTYHjJIaOSv1PK9OTx5VNLXjr+m3St19ZaScC6+9Bav8v5LAsVGEyNLYwMLM0Nkw0tDUws0tIs0yyTUwySEi1TTZPTLIwTc4v9kmsb/ZI1XiQzMzJAIAiIMWRmGZjkAPW6GyaapWW4JuWb5RSXZDIymAIAmbskVQ==',
-        //   'ij04l209G1a6fhEbo6lsti',
-        //   userDetails,
+        //    token,
+        //    channelName,
+        //    userDetails,
         // );
       } catch (error) {
         console.log(error, 'REGISTER-LOCAL-USER-ACCOUNT');
@@ -292,9 +272,6 @@ export default class Voice extends Component<null, State> {
    */
   __EndCall = async () => {
     await this._rtcEngine?.leaveChannel();
-    // await this._rtmEngine
-    //   ?.sendMessageByChannelId(channelName, rtcUid + ':!leave')
-    //   .catch(e => console.log(e));
     this.setState({
       userData: [],
       peerIds: [],
@@ -302,13 +279,12 @@ export default class Voice extends Component<null, State> {
       usernames: {},
     });
     await this._rtcEngine?.stopAudioRecording();
-    this.setState({startRecoding: false});
-    // await this._rtmEngine?.logout().catch(e => console.log(e));
+    this.setState({ startRecoding: false });
   };
 
   __StartRecording = async () => {
-    const {rtcUid, storagePath} = this.state;
-    this.setState({startRecoding: true});
+    const { rtcUid, storagePath } = this.state;
+    this.setState({ startRecoding: true });
     try {
       this._rtcEngine
         ?.startAudioRecordingWithConfig({
@@ -329,19 +305,19 @@ export default class Voice extends Component<null, State> {
 
   __StopRecording = async () => {
     try {
-      await this._rtcEngine?.stopAudioRecording().then(result => {});
+      await this._rtcEngine?.stopAudioRecording().then(result => { });
     } catch (error) {
       console.log(error);
     }
-    this.setState({startRecoding: false});
+    this.setState({ startRecoding: false });
   };
 
   __SwitchMicrophone = () => {
-    const {openMicrophone} = this.state;
+    const { openMicrophone } = this.state;
     this._rtcEngine
       ?.enableLocalAudio(!openMicrophone)
       .then(() => {
-        this.setState({openMicrophone: !openMicrophone});
+        this.setState({ openMicrophone: !openMicrophone });
       })
       .catch(err => {
         console.log('enableLocalAudio', err);
@@ -350,6 +326,70 @@ export default class Voice extends Component<null, State> {
 
   _onChangePlaybackVolume = (value: number) => {
     this._rtcEngine?.adjustPlaybackSignalVolume(value * 400);
+  };
+
+  _renderUsers = () => {
+    const { joinSucceed, myUsername, userData } = this.state;
+    return joinSucceed ? (
+      <View style={styles.fullView}>
+        <Text
+          style={{
+            fontWeight: 'bold',
+            fontSize: 22,
+            alignSelf: 'center',
+          }}>
+          Connected User-Id
+        </Text>
+        <View
+          style={{
+            height: 5,
+            backgroundColor: '#000000',
+            marginHorizontal: 15,
+            borderRadius: 5,
+          }}
+        />
+        <View
+          style={{
+            height: 30,
+            width: '90%',
+            backgroundColor: '#028FCE',
+            marginHorizontal: 20,
+            marginTop: 5,
+            justifyContent: 'center',
+            borderRadius: 25,
+          }}>
+          <Text
+            style={{ fontWeight: 'bold', textAlign: 'center', color: '#ffffff' }}>
+            {myUsername}
+          </Text>
+        </View>
+        <ScrollView>
+          {userData.map((value, index) => {
+            if (value?.userAccount != null || value?.userAccount != undefined) {
+              var xxx = value?.userAccount.split(/[,\:_]/);
+              var x = `${xxx[5]}:${xxx[6]}`;
+            }
+            return (
+              <View
+                key={index.toString()}
+                style={{
+                  height: 30,
+                  width: '90%',
+                  backgroundColor: 'gray',
+                  marginHorizontal: 20,
+                  marginTop: 5,
+                  justifyContent: 'center',
+                  borderRadius: 25,
+                }}>
+                <Text key={index} style={{ textAlign: 'center' }}>
+                  {value?.userAccount != null ? `${xxx[1]} ${xxx[3]}` : 'Guest'}
+                </Text>
+              </View>
+            );
+          })}
+        </ScrollView>
+      </View>
+    ) : null;
   };
 
   render() {
@@ -362,7 +402,7 @@ export default class Voice extends Component<null, State> {
     } = this.state;
     return (
       <View style={styles.max}>
-        <SafeAreaView style={{marginBottom: 0}} />
+        <SafeAreaView style={{ marginBottom: 0 }} />
         <View style={styles.spacer}>
           <Text style={styles.roleText}>
             {this.state.hostName + ' '}
@@ -383,7 +423,7 @@ export default class Voice extends Component<null, State> {
               style={styles.input}
               placeholder={'Name'}
               onChangeText={t => {
-                this.setState({myUsername: t});
+                this.setState({ myUsername: t });
               }}
               value={myUsername}
             />
@@ -392,13 +432,13 @@ export default class Voice extends Component<null, State> {
             ) : null}
           </>
         )}
-        <View style={{flexDirection: 'column', height: 120, marginTop: 20}}>
+        <View style={{ flexDirection: 'column', height: 120, marginTop: 20 }}>
           <View style={styles.buttonHolder}>
             <TouchableOpacity onPress={this.__EndCall} style={styles.button}>
               <Text style={styles.buttonText}> End Call </Text>
             </TouchableOpacity>
           </View>
-          <View style={{height: 20}} />
+          <View style={{ height: 20 }} />
           <View
             style={{
               flexDirection: 'row',
@@ -406,17 +446,17 @@ export default class Voice extends Component<null, State> {
               justifyContent: 'space-between',
             }}>
             <AgoraButton
-              buttonStyle={{backgroundColor: '#38373A', paddingHorizontal: 32}}
+              buttonStyle={{ backgroundColor: '#38373A', paddingHorizontal: 32 }}
               title={`Join As a Host`}
               onPress={() => this.__StartCall('Host')}
             />
             <AgoraButton
-              buttonStyle={{backgroundColor: '#38373A', paddingHorizontal: 22}}
+              buttonStyle={{ backgroundColor: '#38373A', paddingHorizontal: 22 }}
               title={`Join As a Listener`}
               onPress={() => this.__StartCall('Listener')}
             />
           </View>
-          <View style={{height: 5}} />
+          <View style={{ height: 5 }} />
           <View
             style={{
               flexDirection: 'row',
@@ -424,116 +464,22 @@ export default class Voice extends Component<null, State> {
               justifyContent: 'space-between',
             }}>
             <AgoraButton
-              buttonStyle={{backgroundColor: '#38373A', paddingHorizontal: 30}}
+              buttonStyle={{ backgroundColor: '#38373A', paddingHorizontal: 30 }}
               title={`Microphone ${openMicrophone ? 'on' : 'off'}`}
               onPress={this.__SwitchMicrophone}
             />
             <AgoraButton
-              buttonStyle={{backgroundColor: '#38373A', paddingHorizontal: 30}}
+              buttonStyle={{ backgroundColor: '#38373A', paddingHorizontal: 30 }}
               title={`${startRecoding ? 'Stop' : 'Start'} Recording`}
               onPress={
                 startRecoding ? this.__StopRecording : this.__StartRecording
               }
             />
           </View>
-          <View style={{height: 5}} />
+          <View style={{ height: 5 }} />
         </View>
       </View>
     );
   }
-
-  _renderUsers = () => {
-    const {joinSucceed, myUsername, userData} = this.state;
-    return joinSucceed ? (
-      <View style={styles.fullView}>
-        <Text
-          style={{
-            fontWeight: 'bold',
-            fontSize: 22,
-            alignSelf: 'center',
-          }}>
-          Connected User-Id
-        </Text>
-        <View
-          style={{
-            height: 5,
-            backgroundColor: '#000000',
-            marginHorizontal: 15,
-            borderRadius: 5,
-          }}
-        />
-
-        <View
-          style={{
-            height: 30,
-            width: '90%',
-            backgroundColor: '#028FCE',
-            marginHorizontal: 20,
-            marginTop: 5,
-            justifyContent: 'center',
-            borderRadius: 25,
-          }}>
-          <Text
-            style={{fontWeight: 'bold', textAlign: 'center', color: '#ffffff'}}>
-            {myUsername}
-          </Text>
-        </View>
-        <ScrollView>
-          {userData.map((value, index) => {
-            if (value?.userAccount != null || value?.userAccount != undefined) {
-              var xxx = value?.userAccount.split(/[,\:_]/);
-              var x = `${xxx[5]}:${xxx[6]}`;
-              console.log(x.replaceAll('#', '/'), '/-/-/-/-/-/-/-/-/-/-/-/-');
-            }
-
-            return (
-              <View
-                key={index.toString()}
-                style={{
-                  height: 30,
-                  width: '90%',
-                  backgroundColor: 'gray',
-                  marginHorizontal: 20,
-                  marginTop: 5,
-                  justifyContent: 'center',
-                  borderRadius: 25,
-                }}>
-                <Text key={index} style={{textAlign: 'center'}}>
-                  {/* as */}
-                  {value?.userAccount != null ? `${xxx[1]} ${xxx[3]}` : 'Guest'}
-                </Text>
-              </View>
-            );
-          })}
-        </ScrollView>
-      </View>
-    ) : null;
-    // return joinSucceed ? (
-    //   <View style={styles.fullView}>
-    //     {/* <Text style={styles.subHeading}>Broadcaster List</Text>
-    //     {isHost ? <Text>{myUsername}</Text> : <></>} */}
-    //     {/* channel: channel,
-    //       uid: uid,
-    //       elapsed: elapsed, */}
-    //     <Text style={{fontWeight:'bold'}}>{localUserData[0].uid}</Text>
-    //     <ScrollView>
-    //       {peerIds.map((value, index) => {
-    //         return <Text key={index}>{value}</Text>;
-    //         // return <Text key={index}>{usernames[value + '']}</Text>;
-    //       })}
-    //     </ScrollView>
-    //     {/* <Text style={styles.subHeading}>Audience List</Text>
-    //     {!isHost ? <Text>{myUsername}</Text> : <></>}
-    //     <ScrollView>
-    //       {Object.keys(usernames).map((key, index) => {
-    //         return (
-    //           <Text key={index}>
-    //             {peerIds.includes(parseInt(key, 10)) ? null : usernames[key]}
-    //           </Text>
-    //         );
-    //       })}
-    //     </ScrollView> */}
-    //   </View>
-    // ) : null;
-  };
 }
+.
